@@ -8,19 +8,24 @@ public class Main {
     public static void main(String[] args) {
         try {
             URL url = new URL("https://api-arrivals.sofiatraffic.bg/api/v1/arrivals/1574/");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //opens a connection to the URL
-            connection.setRequestMethod("GET"); //what is a request method?
+            //opens a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode(); //gets the response code
-            BufferedReader reader; //create a reader to read the response from the server
+            BufferedReader reader; //create a reader to read the response from the server line by line
             if (responseCode == HttpURLConnection.HTTP_OK) { //can also be written as == 200
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream())); //???
+                //gets the whole input stream (response) and adds it to the reader in case the connection is ok
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             } else {
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream())); //???
+                //gets the response in case the connection has some error
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
             }
 
-            StringBuilder response = new StringBuilder(); //???
-            String line; //???
-            while ((line = reader.readLine()) != null) { //while the reader has new line it appends to the StringBuilder???
+            //StringBuilder is a class similar to string, but works faster compared to String
+            StringBuilder response = new StringBuilder();
+            String line; //creates a variable to use for every new line in the response
+            //while the reader's next line isn't empty it appends it to the response
+            while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
             reader.close(); //closes the reader
